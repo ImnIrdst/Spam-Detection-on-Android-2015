@@ -79,9 +79,9 @@ public class LearningDataSource {
                                  String TABLE_NAME, String COL_WORD, String COL_FREQ){
         queryFreq = queryFreq+1;
         final String SQL_INCREASE_FREQ =
-                "UPDATE " + SpamWordsTable.TABLE_NAME + " "
-                        + "SET " + SpamWordsTable.COL_FREQ + " = ? "
-                        + "WHERE " + SpamWordsTable.COL_WORD + " = ? ;"
+                "UPDATE " + TABLE_NAME + " "
+                        + "SET " + COL_FREQ + " = ? "
+                        + "WHERE " + COL_WORD + " = ? ;"
                 ;
         db.execSQL(SQL_INCREASE_FREQ, new String[]{queryFreq.toString(), word});
     }
@@ -188,7 +188,7 @@ public class LearningDataSource {
             InsertWordIntoHams(word.trim());
         }
 
-        increaseWordFreq(HamWordsTable.ROW_COUNT_ALL_DOCS, getFreqOfWordInSpams(HamWordsTable.ROW_COUNT_ALL_DOCS),
+        increaseWordFreq(HamWordsTable.ROW_COUNT_ALL_DOCS, getFreqOfWordInHams(HamWordsTable.ROW_COUNT_ALL_DOCS),
                 HamWordsTable.TABLE_NAME, HamWordsTable.COL_WORD, HamWordsTable.COL_FREQ);
     }
 

@@ -50,7 +50,6 @@ public class LearningDbHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_TABLE_SPAM_WORDS);
         db.execSQL(SQL_CREATE_TABLE_HAM_WORDS);
         db.execSQL(SQL_CREATE_TABLE_SPAMMERS);
-        //db.close();
     }
 
     @Override

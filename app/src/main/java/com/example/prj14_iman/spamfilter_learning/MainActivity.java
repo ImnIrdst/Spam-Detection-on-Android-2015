@@ -47,6 +47,12 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onStop() {
+        learningDataSource.close();
+        super.onStop();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -74,7 +80,6 @@ public class MainActivity extends ActionBarActivity {
             mainTextView.append(queryWord + ": \t" + queryFreq + "\n");
             cursor.moveToNext();
         }
-        learningDataSource.close();
     }
 
     public void onMarkAsHamButtonClicked(View view) {
@@ -91,7 +96,6 @@ public class MainActivity extends ActionBarActivity {
             mainTextView.append(queryWord + ": \t" + queryFreq + "\n");
             cursor.moveToNext();
         }
-        learningDataSource.close();
     }
 
     public void onIsSpamClicked(View view) {

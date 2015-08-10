@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.prj14_iman.spamfilter_learning.Data.LearningDataSource;
 import com.example.prj14_iman.spamfilter_learning.Data.LearningDbHelper;
 
 
@@ -22,6 +23,7 @@ public class MainActivity extends ActionBarActivity {
     Button   getSpamsButton;
     Button   getHamsButton;
     Button   isSpamButton;
+    LearningDataSource learningDataSource;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +33,10 @@ public class MainActivity extends ActionBarActivity {
         markAsSpamButton    = (Button) findViewById(R.id.markAsSpamButton);
         markAsHamButton     = (Button) findViewById(R.id.markAsHamButton);
         getSpamsButton      = (Button) findViewById(R.id.getSpamsButton);
-        getHamsButton       = (Button) findViewById(R.id.getHamsButton);;
-        isSpamButton   = (Button) findViewById(R.id.isSpamButton);;
+        getHamsButton       = (Button) findViewById(R.id.getHamsButton);
+        isSpamButton   = (Button) findViewById(R.id.isSpamButton);
+        learningDataSource = new LearningDataSource(this);
+        learningDataSource.open();
     }
 
     @Override
@@ -56,15 +60,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onMarkAsSpamButtonClicked(View view) {
-        LearningDbHelper db = new LearningDbHelper(this);
-        db.setMessageAsSpam(mainEditText.getText().toString());
-        db.close();
+        learningDataSource.setMessageAsSpam(mainEditText.getText().toString());
     }
 
     public void onGetSpamsButtonClicked(View view) { // TODO: For Debug Clear
         mainTextView.setText("");
         LearningDbHelper db = new LearningDbHelper(this);
-        Cursor cursor = db.getAllData("SpamWords");
+        Cursor cursor = learningDataSource.getAllData("SpamWords");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             String  queryWord = cursor.getString(cursor.getColumnIndex("Word"));
@@ -72,19 +74,16 @@ public class MainActivity extends ActionBarActivity {
             mainTextView.append(queryWord + ": \t" + queryFreq + "\n");
             cursor.moveToNext();
         }
-        db.close();
+        learningDataSource.close();
     }
 
     public void onMarkAsHamButtonClicked(View view) {
-        LearningDbHelper db = new LearningDbHelper(this);
-        db.setMessageAsHam(mainEditText.getText().toString());
-        db.close();
+        learningDataSource.setMessageAsHam(mainEditText.getText().toString());
     }
 
     public void onGetHamsButtonClicked(View view) { // TODO: For Debug Clear
         mainTextView.setText("");
-        LearningDbHelper db = new LearningDbHelper(this);
-        Cursor cursor = db.getAllData("HamWords");
+        Cursor cursor = learningDataSource.getAllData("HamWords");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             String  queryWord = cursor.getString(cursor.getColumnIndex("Word"));
@@ -92,12 +91,11 @@ public class MainActivity extends ActionBarActivity {
             mainTextView.append(queryWord + ": \t" + queryFreq + "\n");
             cursor.moveToNext();
         }
-        db.close();
+        learningDataSource.close();
     }
 
     public void onIsSpamClicked(View view) {
-        LearningDbHelper db = new LearningDbHelper(this);
-        boolean isSpam = db.isSpam(mainEditText.getText().toString());
+        boolean isSpam = learningDataSource.isSpam(mainEditText.getText().toString());
         if(isSpam) mainTextView.setText("This Is a Spam");
         if(!isSpam) mainTextView.setText("This Isn't a Spam");
     }

@@ -33,7 +33,16 @@ public class LearningDbContract {
         public static final String TABLE_NAME = "Spammers";
         public static final String COL_NAME = "Name";       // STRING
         public static final String COL_NUMBER = "Number";       // INTEGER
+    }
 
+    public class WordEntry{
+        public String word;
+        public Integer freq;
+
+        @Override
+        public String toString() {
+            return word.toString() + ": " + freq.toString();
+        }
     }
 
     // TODO: Use Spam Message Details (Contact Notes)
